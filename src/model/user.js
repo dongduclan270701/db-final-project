@@ -30,8 +30,14 @@ const validateSchema = async (data) => {
 const createNew = async (data) => {
     try {
         const value = await validateSchema(data)
-        const result = await getDB().collection(userCollectionName).insertOne(value)
-        return result
+        const username = data.username
+        const findUser = await getDB().collection(userCollectionName).findOne({username})
+        if (!findUser) {
+            const result = await getDB().collection(userCollectionName).insertOne(value)
+            return result
+        }
+        
+        return "already"
     } catch (error) {
         throw new Error(error)
     }
