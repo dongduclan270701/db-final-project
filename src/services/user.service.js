@@ -18,5 +18,14 @@ const findUser = async (data) => {
         throw new Error(error)
     }
 }
+const changePassword = async (id, password) => {
+    try {
+        const changePassword = await UserModel.changePassword({ id },{$set: { password }})
+        
+        return changePassword
+    } catch (error) {
+        throw new Error(error)
+    }
+}
 
-export const userService = { createNew,findUser }
+export const userService = { createNew, findUser, changePassword }

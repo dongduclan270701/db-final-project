@@ -58,6 +58,29 @@ const LoginUser = async (req, res) => {
 	}
 }
 
+const changePassword = async (req, res) => {
+	try {
+		const { token, password: plainTextPassword } = req.body
+		if (!plainTextPassword || typeof plainTextPassword !== "string") {
+			return res.json({ status: "error", error: "Invalid password" })
+		}
+		console.log(token)
+		if (plainTextPassword.length < 5) {
+			return res.json({
+				status: "error",
+				error: " Password too small. Should be at least 6 characters"
+			})
+		}
+		const user = jwt.verify(token, JWT_SECRET)
+		const password = await bcrypt.hash(plainTextPassword, 10)
+		await userService.changePassword(user.id,password )
 
-
-export const userController = { createNew, LoginUser }
+		console.log(password)
+		res.json({ status: "ok" })
+	} catch (error) {
+		res.status(HttpStatusCode.INTERNAL_SERVER).json({
+			error: error.message + 1
+		})
+	}
+}
+export const userController = { createNew, LoginUser, changePassword }

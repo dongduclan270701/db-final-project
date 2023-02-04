@@ -23,35 +23,6 @@ const bootServer = () => {
 	app.use('/', express.static(path.join(__dirname, 'static')))
 	app.use(bodyParser.json())
 	app.use('/v1', apiV1)
-	// app.post('/api/change-password', async (req, res) => {
-	// 	const { token, password: plainTextPassword } = req.body
-	// 	if (!plainTextPassword || typeof plainTextPassword !== "string") {
-	// 		return res.json({ status: "error", error: "Invalid password" })
-	// 	}
-	// 	console.log(token)
-	// 	if (plainTextPassword.length < 5) {
-	// 		return res.json({
-	// 			status: "error",
-	// 			error: " Password too small. Should be at least 6 characters"
-	// 		})
-	// 	}
-	// 	try {
-	// 		const user = jwt.verify(token, JWT_SECRET)
-	// 		const _id = user.id
-	// 		const password = await bcrypt.hash(plainTextPassword, 10)
-	// 		await User.updateOne(
-	// 			{ _id },
-	// 			{
-	// 				$set: { password }
-	// 			}
-	// 		)
-	// 		res.json({ status: "ok" })
-	// 	} catch (error) {
-	// 		console.log(error)
-	// 		return res.json({ status: "error", error: ":))" })
-	// 	}
-
-	// })
 
 	app.listen((9999), () => {
 		console.log("Server is Running ");

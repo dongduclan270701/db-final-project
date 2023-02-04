@@ -9,4 +9,6 @@ router.route('/register')
 
 router.route('/login')
     .post(userController.LoginUser)
+router.route('/change-password')
+    .post(userController.changePassword)
 export const userRoutes = router

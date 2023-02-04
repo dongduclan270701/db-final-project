@@ -44,5 +44,13 @@ const findUser = async (data) => {
         throw new Error(error)
     }
 }
+const changePassword = async (id, password) => {
+    try {
+        const result = await getDB().collection(userCollectionName).updateOne({ _id: ObjectId(id) },password)
+        return result
+    } catch (error) {
+        throw new Error(error)
+    }
+}
 
-export const UserModel = { createNew, findUser }
+export const UserModel = { createNew, findUser, changePassword }
