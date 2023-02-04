@@ -2,7 +2,8 @@
   "name": "db-final-project",
   "version": "1.0.0",
   "description": "project final",
-  "main": "app.js",
+  "main": "src/app.js",
+  "type": "commonjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "eslint": "eslint src",
@@ -37,6 +38,7 @@
     "eslint": "^8.33.0",
     "express": "^4.18.2",
     "joi": "^17.7.0",
+    "jsonwebtoken": "^9.0.0",
     "lodash": "^4.17.21",
     "mongodb": "^4.13.0",
     "mongoose": "^6.9.0",

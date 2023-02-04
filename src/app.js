@@ -1,58 +1,59 @@
-// Requiring module
+import { connectDB } from '*/config/db.js'
+import { User } from "*/model/user"
+import { apiV1 } from '*/routes/v1'
 const express = require("express");
-const fs = require("fs");
+// const fs = require("fs");
 const bodyParser = require("body-parser")
-// const mongoose = require("mongoose")
 const bcrypt = require("bcryptjs")
 var path = require('path');
-
+var cors = require('cors')
 const app = express();
-
-// function authentication(req, res, next) {
-// 	var authheader = req.headers.authorization;
-// 	console.log(req.headers);
-
-// 	if (!authheader) {
-// 		var err = new Error('You are not authenticated!');
-// 		res.setHeader('WWW-Authenticate', 'Basic');
-// 		err.status = 401;
-// 		return next(err)
-// 	}
-
-// 	var auth = new Buffer.from(authheader.split(' ')[1],
-// 	'base64').toString().split(':');
-// 	var user = auth[0];
-// 	var pass = auth[1];
-
-// 	if (user == 'admin' && pass == 'password') {
-
-// 		// If Authorized user
-// 		next();
-// 	} else {
-// 		var err = new Error('You are not authenticated!');
-// 		res.setHeader('WWW-Authenticate', 'Basic');
-// 		err.status = 401;
-// 		return next(err);
-// 	}
-
-// }
-
-// // First step is the authentication of the client
-// app.use(authentication)
-// app.use(express.static(path.join(__dirname, 'public')));
-
+const jwt = require("jsonwebtoken")
 // Server setup
 
-// mongoose.connect()
-app.use('/', express.static(path.join(__dirname, 'static')))
-app.use(bodyParser.json())
+connectDB()
+	.then(() => console.log('Connected MongoDB successfully to server'))
+	.then(() => bootServer())
+	.catch(error => {
+		console.error(error)
+		process.exit(1)
+	})
+const bootServer = () => {
+	app.use(cors());
+	app.use('/', express.static(path.join(__dirname, 'static')))
+	app.use(bodyParser.json())
+	app.use('/v1', apiV1)
+	// app.post('/api/change-password', async (req, res) => {
+	// 	const { token, password: plainTextPassword } = req.body
+	// 	if (!plainTextPassword || typeof plainTextPassword !== "string") {
+	// 		return res.json({ status: "error", error: "Invalid password" })
+	// 	}
+	// 	console.log(token)
+	// 	if (plainTextPassword.length < 5) {
+	// 		return res.json({
+	// 			status: "error",
+	// 			error: " Password too small. Should be at least 6 characters"
+	// 		})
+	// 	}
+	// 	try {
+	// 		const user = jwt.verify(token, JWT_SECRET)
+	// 		const _id = user.id
+	// 		const password = await bcrypt.hash(plainTextPassword, 10)
+	// 		await User.updateOne(
+	// 			{ _id },
+	// 			{
+	// 				$set: { password }
+	// 			}
+	// 		)
+	// 		res.json({ status: "ok" })
+	// 	} catch (error) {
+	// 		console.log(error)
+	// 		return res.json({ status: "error", error: ":))" })
+	// 	}
 
-app.post('/api/register', async (req, res) =>{
-	// console.log(req.query.name)
-	console.log(await bcrypt.hash(req.query.name, 10))
-	res.json({ status: 'ok'})
-})
+	// })
 
-app.listen((3000), () => {
-	console.log("Server is Running ");
-})
+	app.listen((9999), () => {
+		console.log("Server is Running ");
+	})
+}
